@@ -1,11 +1,14 @@
-//
-// jasmine-require
-//
+/**
+ * Jasmine require Extension
+ * @type {[type]}
+ * @todo : add warning, if a mock was not used
+ */
+
 var path     = require('path')
   , jasmine  = require('jasmine-node')
 ;
 
-function Mockreq() {
+function Req() {
   
   var parent = module.parent
     , dir    = path.dirname( parent.id )
@@ -27,19 +30,24 @@ function Mockreq() {
     return stubs[path];
   }
 
-  function setStub( path, mock, methods ) {
-    
+  function setStub( mod, opt_mock, methods ) {
+
+    if ( ! methods ) {
+      methods = opt_mock;
+      opt_mock = path.basename( mod, path.extname( mod ));
+    }
+
     var fn;
     
     if ( arguments.length === 3 ) {
-      fn = jasmine.createSpyObj( mock, methods ); 
+      fn = jasmine.createSpyObj( opt_mock, methods ); 
     
     } else {
       fn = jasmine.createSpy();
     }
 
-    stubs[path] = fn;
-    return stubs[path];
+    stubs[mod] = fn;
+    return stubs[mod];
   }
 
   pub.req = function( mod ) {
@@ -82,5 +90,5 @@ function Mockreq() {
 }
 
 module.exports = function() {
-  return new Mockreq();
+  return new Req();
 };

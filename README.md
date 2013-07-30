@@ -9,16 +9,10 @@ with mocks/stubs in the testing unit.
 var jasmine = require('jasmine-node')
   , jasreq  = require('jasmine-req')();
 
-var someDep = jasreq.stub(
-    './someDep',
-    'someDep', 
+var someStub = jasreq.stub(
+    './someModule',
+    'someModule', 
     ['fn1', 'fn2']);
 
-someDep.fn1.andCallFake(function() {
-  console.log('I am a fake');
-});
-
 var uut = jasreq.req('path/to/someModule');
-uut.someDep.fn1(); /* will output "I am a fake" */
-
 ```
