@@ -6,6 +6,7 @@
 
 var path     = require('path')
   , jasmine  = require('jasmine-node')
+  , _module  = require('module')
 ;
 
 function Req() {
@@ -55,6 +56,10 @@ function Req() {
     var ext = path.extname( mod ) || '.js'
       , super_require = require.extensions[ext];
 
+      // delete cached file
+      var id = _module._resolveFilename( mod );
+      delete _module._cache[id];
+
     require.extensions[ext] = function( mod, filename ) {
 
       var base = path.basename( filename )
@@ -66,6 +71,7 @@ function Req() {
           return stubs[req];
         
         } else {
+          
           return mod_super_require( req );
         }
       };

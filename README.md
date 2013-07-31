@@ -11,7 +11,7 @@ var jasmine = require('jasmine-node')
 
 var someStub = jasreq.stub(
     './someModule',
-    'someModule', 
+    'someModule', /* this one is optional */
     ['fn1', 'fn2']);
 
 var uut = jasreq.req('path/to/someModule');
